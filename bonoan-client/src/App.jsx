@@ -1,26 +1,32 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-// HomePage Structure
 import Layout from './components/Layout';
-import ArticlePage from './pages/ArticlePage';
 import HomePage from './pages/HomePage';
 import AboutPage from './pages/AboutPage';
+import ArticleListPage from './pages/ArticleListPage';
+import ArticlePage from './pages/ArticlePage';
+import NotFoundPage from './pages/NotFoundPage';
 
 const routes = [
   {
     path: '/',
     element: <Layout />,
+    errorElement: <NotFoundPage />,
     children: [
       {
-        path: '',
+        path: '/',
         element: <HomePage />,
       },
       {
-        path: 'about',
+        path: '/about',
         element: <AboutPage />,
       },
       {
-        path: 'articles',
+        path: '/articles',
+        element: <ArticleListPage />,
+      },
+      {
+        path: '/articles/:articleId',
         element: <ArticlePage />,
       },
     ],
@@ -30,9 +36,7 @@ const routes = [
 const router = createBrowserRouter(routes);
 
 function App() {
-  return (
-    <RouterProvider router={router} />
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

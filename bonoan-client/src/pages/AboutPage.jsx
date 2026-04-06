@@ -9,7 +9,6 @@ const AboutPage = () => {
       <section className="border-y-2 border-orange-600 px-6 py-12">
         <div className="grid lg:grid-cols-2 gap-10 items-center">
 
-          {/* TEXT */}
           <div>
             <p className="text-orange-400 text-xs uppercase tracking-[0.3em]">
               About
@@ -38,7 +37,6 @@ const AboutPage = () => {
             </div>
           </div>
 
-          {/* IMAGE */}
           <div className="rounded-3xl border-2 border-orange-600 p-4 shadow-2xl hover:scale-105 transition-all">
             <div className="w-full aspect-[4/3] overflow-hidden rounded-xl">
               <img
@@ -52,7 +50,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* CARDS */}
       <section className="px-6 pb-10">
         <div className="grid md:grid-cols-3 gap-6">
           {[
@@ -75,7 +72,6 @@ const AboutPage = () => {
         </div>
       </section>
 
-      {/* SECOND IMAGE SECTION */}
       <section className="border-y-2 border-orange-600 px-6 py-10">
         <div className="grid lg:grid-cols-2 gap-8 items-center">
 
