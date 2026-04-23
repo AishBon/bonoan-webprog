@@ -1,10 +1,20 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../../components/Button';
 
 const inputClasses =
   'mt-2 w-full rounded-xl border border-orange-500/30 bg-black px-4 py-3 text-sm text-white outline-none transition placeholder:text-gray-500 focus:border-orange-500';
 
 const SignInPage = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    // 🔐 (Temporary) no authentication yet
+    // Redirect to dashboard
+    navigate('/dashboard');
+  };
+
   return (
     <>
       <h1 className="text-3xl font-bold text-orange-400">Log In</h1>
@@ -13,7 +23,7 @@ const SignInPage = () => {
         Welcome back. Enter your credentials to continue.
       </p>
 
-      <form className="mt-8 space-y-5">
+      <form onSubmit={handleSubmit} className="mt-8 space-y-5">
 
         <div>
           <label className="text-sm text-gray-300">Email</label>
@@ -30,7 +40,10 @@ const SignInPage = () => {
           <span className="hover:text-orange-400 cursor-pointer">Forgot?</span>
         </div>
 
-        <Button className="w-full bg-gradient-to-r from-orange-500 to-red-600 text-white">
+        <Button
+          type="submit"
+          className="w-full bg-gradient-to-r from-orange-500 to-red-600 text-white"
+        >
           Log In
         </Button>
 
