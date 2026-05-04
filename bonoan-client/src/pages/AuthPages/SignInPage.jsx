@@ -10,7 +10,6 @@ const SignInPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // 🔐 (Temporary) no authentication yet
     // Redirect to dashboard
     navigate('/dashboard');
   };
