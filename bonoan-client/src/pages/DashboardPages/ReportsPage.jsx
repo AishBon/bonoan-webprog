@@ -4,18 +4,15 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import { Gauge } from "@mui/x-charts/Gauge";
 import { DataGrid } from "@mui/x-data-grid";
 
-/* DATA */
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-];
+import usersData from "../../data/users.json";
+
+/* DATA (FROM JSON) */
+const rows = usersData.map((u) => ({
+  id: u.id,
+  lastName: u.lastName,
+  firstName: u.firstName,
+  age: u.age ? Number(u.age) : null,
+}));
 
 /* TABLE */
 const columns = [
@@ -29,11 +26,17 @@ const columns = [
 const totalUsers = rows.length;
 
 const validAges = rows.filter((r) => r.age !== null);
-const averageAge =
-  validAges.reduce((sum, r) => sum + r.age, 0) / validAges.length;
 
-const maxAge = Math.max(...validAges.map((r) => r.age));
-const minAge = Math.min(...validAges.map((r) => r.age));
+const averageAge =
+  validAges.reduce((sum, r) => sum + r.age, 0) / (validAges.length || 1);
+
+const maxAge = validAges.length
+  ? Math.max(...validAges.map((r) => r.age))
+  : 0;
+
+const minAge = validAges.length
+  ? Math.min(...validAges.map((r) => r.age))
+  : 0;
 
 const ageGroups = {
   youth: rows.filter((r) => r.age && r.age < 18).length,
@@ -76,7 +79,6 @@ export default function ReportsPage() {
             body { font-family: Arial; padding: 20px; background: #000; color: #fff; }
             h1 { color: #fb923c; }
 
-            /* ONLY hide buttons */
             .no-print {
               display: none !important;
             }
@@ -110,7 +112,6 @@ export default function ReportsPage() {
           </p>
         </div>
 
-        {/* IS HIDDEN WHEN PRINTING */}
         <div className="flex gap-2 no-print">
           <button className="bg-orange-500 px-4 py-2 rounded-lg">
             Generate
