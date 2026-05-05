@@ -9,7 +9,10 @@ import { PieChart } from "@mui/x-charts/PieChart";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
-/* DATA */
+/* IMPORT USERS JSON */
+import usersData from "../../data/users.json";
+
+/* TABLE */
 const columns = [
   { field: "id", headerName: "ID", width: 90 },
   { field: "firstName", headerName: "First name", width: 150 },
@@ -24,23 +27,31 @@ const columns = [
   },
 ];
 
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 14 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 31 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 31 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 11 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-];
+/* USERS JSON AS ROWS */
+const rows = usersData.map((u) => ({
+  ...u,
+  age: u.age ? Number(u.age) : null,
+}));
 
 /* METRICS */
 const totalUsers = rows.length;
+
 const validAges = rows.filter((r) => r.age !== null);
+
 const averageAge =
-  validAges.reduce((sum, r) => sum + r.age, 0) / validAges.length;
+  validAges.reduce((sum, r) => sum + r.age, 0) /
+  (validAges.length || 1);
+
+/* AGE GROUPS */
+const ageGroups = {
+  youth: rows.filter((r) => r.age && r.age < 18).length,
+  adult: rows.filter((r) => r.age && r.age >= 18 && r.age < 60).length,
+  senior: rows.filter((r) => r.age && r.age >= 60).length,
+};
+
+/* STYLE */
+const card =
+  "rounded-3xl border border-orange-500/20 bg-gradient-to-br from-gray-900 to-black p-6 shadow-lg";
 
 export default function DashboardPage() {
   return (
@@ -72,12 +83,11 @@ export default function DashboardPage() {
 
       {/* GAUGES */}
       <div className="grid md:grid-cols-2 gap-6 mb-10">
-
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-orange-500/30 bg-black p-6">
-          <p className="text-orange-400 mb-2">Total Users</p>
+        <div className={card + " flex flex-col items-center"}>
+          <p className="text-orange-400 mb-2">User Volume Index</p>
           <Gauge
-            width={160}
-            height={160}
+            width={180}
+            height={180}
             value={totalUsers}
             sx={{
               "& text": { fill: "#fb923c" },
@@ -86,12 +96,12 @@ export default function DashboardPage() {
           />
         </div>
 
-        <div className="flex flex-col items-center justify-center rounded-3xl border border-orange-500/30 bg-black p-6">
-          <p className="text-orange-400 mb-2">Average Age</p>
+        <div className={card + " flex flex-col items-center"}>
+          <p className="text-orange-400 mb-2">Age Stability Score</p>
           <Gauge
             width={220}
             height={220}
-            value={averageAge}
+            value={Math.round(averageAge)}
             valueMax={100}
             sx={{
               "& text": { fill: "#f97316" },
@@ -107,13 +117,16 @@ export default function DashboardPage() {
         <div className="bg-white p-5 rounded-3xl shadow-lg">
           <BarChart
             series={[
-              { data: [35, 44, 24, 34], label: "Series 1", color: "#fb923c" },
-              { data: [51, 6, 49, 30], label: "Series 2", color: "#f97316" },
+              {
+                data: rows.map((r) => r.age ?? 0),
+                label: "Age",
+                color: "#fb923c",
+              },
             ]}
             height={240}
             xAxis={[
               {
-                data: ["Q1", "Q2", "Q3", "Q4"],
+                data: rows.map((r) => r.id),
                 scaleType: "band",
               },
             ]}
@@ -125,9 +138,9 @@ export default function DashboardPage() {
             series={[
               {
                 data: [
-                  { id: 0, value: 10, label: "A", color: "#fb923c" },
-                  { id: 1, value: 15, label: "B", color: "#f97316" },
-                  { id: 2, value: 20, label: "C", color: "#ea580c" },
+                  { id: 0, value: ageGroups.youth, label: "Youth", color: "#fb923c" },
+                  { id: 1, value: ageGroups.adult, label: "Adult", color: "#f97316" },
+                  { id: 2, value: ageGroups.senior, label: "Senior", color: "#ea580c" },
                 ],
               },
             ]}
