@@ -6,7 +6,7 @@ import { DataGrid } from "@mui/x-data-grid";
 
 import usersData from "../../data/users.json";
 
-/* DATA (FROM JSON) */
+/* DATA FROM JSON */
 const rows = usersData.map((u) => ({
   id: u.id,
   lastName: u.lastName,
@@ -113,17 +113,11 @@ export default function ReportsPage() {
         </div>
 
         <div className="flex gap-2 no-print">
-          <button className="bg-orange-500 px-4 py-2 rounded-lg">
-            Generate
-          </button>
           <button
             onClick={handlePrint}
-            className="border border-orange-500 px-4 py-2 rounded-lg"
+            className="bg-orange-500 px-4 py-2 rounded-lg"
           >
             Export
-          </button>
-          <button className="border border-orange-500 px-4 py-2 rounded-lg">
-            Filter
           </button>
         </div>
       </div>
