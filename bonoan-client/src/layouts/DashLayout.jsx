@@ -11,6 +11,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Typography from "@mui/material/Typography";
 import InputBase from "@mui/material/InputBase";
 import Button from "@mui/material/Button";
+import InsightsIcon from "@mui/icons-material/Insights";
 
 import SearchIcon from "@mui/icons-material/Search";
 
@@ -30,7 +31,12 @@ const drawerWidth = 240;
 const dashboardNavItems = [
   { label: "Dashboard", to: "/dashboard", icon: DashboardIcon },
   { label: "Reports", to: "/dashboard/reports", icon: AssessmentIcon },
-  { label: "Users", to: "/dashboard/users", icon: PeopleIcon },
+  { label: "Users", to: "/dashboard/users", icon: PeopleIcon, adminOnly: true },
+  {
+    label: "Articles",
+    to: "/dashboard/articles",
+    icon: InsightsIcon,
+  },
 ];
 
 const AppBar = styled(MuiAppBar)(() => ({
@@ -79,20 +85,29 @@ const DashLayout = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  // Read current user's role from localStorage
+  const currentUser = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("currentUser"));
+    } catch {
+      return null;
+    }
+  })();
+
+  const isAdmin = currentUser?.type === "admin";
+
+  // Filter out adminOnly items for non-admin users
+  const visibleNavItems = dashboardNavItems.filter(
+    (item) => !item.adminOnly || isAdmin,
+  );
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        minHeight: "100vh",
-        width: "100%",
-      }}
-    >
+    <Box sx={{ display: "flex", minHeight: "100vh", width: "100%" }}>
       <CssBaseline />
 
       {/* TOP BAR */}
       <AppBar position="fixed" elevation={0}>
         <Toolbar sx={{ minHeight: "72px !important" }}>
-
           {/* LOGO */}
           <div
             onClick={() => setOpen(!open)}
@@ -147,15 +162,11 @@ const DashLayout = () => {
               border: "1px solid #fb923c",
               color: "#fb923c",
               backgroundColor: "transparent",
-              "&:hover": {
-                backgroundColor: "#fb923c",
-                color: "white",
-              },
+              "&:hover": { backgroundColor: "#fb923c", color: "white" },
             }}
           >
             Logout
           </Button>
-
         </Toolbar>
       </AppBar>
 
@@ -164,7 +175,7 @@ const DashLayout = () => {
         <Toolbar />
 
         <List>
-          {dashboardNavItems.map(({ label, to, icon: Icon }) => (
+          {visibleNavItems.map(({ label, to, icon: Icon }) => (
             <ListItem key={to} disablePadding>
               <ListItemButton
                 component={Link}
@@ -177,9 +188,7 @@ const DashLayout = () => {
                   "&.Mui-selected": {
                     backgroundColor: "rgba(251,146,60,0.15)",
                   },
-                  "&:hover": {
-                    backgroundColor: "rgba(251,146,60,0.08)",
-                  },
+                  "&:hover": { backgroundColor: "rgba(251,146,60,0.08)" },
                 }}
               >
                 <ListItemIcon sx={{ color: "#fb923c", minWidth: 40 }}>
@@ -193,15 +202,8 @@ const DashLayout = () => {
       </Drawer>
 
       {/* MAIN */}
-      <Box
-        component="main"
-        sx={{
-          flexGrow: 1,
-          width: "100%",
-        }}
-      >
+      <Box component="main" sx={{ flexGrow: 1, width: "100%" }}>
         <Toolbar sx={{ minHeight: "72px !important" }} />
-
         <div style={{ width: "100%" }}>
           <Outlet />
         </div>
