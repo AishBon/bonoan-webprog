@@ -1,11 +1,10 @@
-import { Outlet } from 'react-router-dom';
-import NavBar from '../components/NavBar';
-import Footer from '../components/Footer';
+import { Outlet } from "react-router-dom";
+import NavBar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 const Layout = () => {
   return (
     <div className="relative min-h-screen flex flex-col text-gray-100 overflow-hidden">
-
       {/* SIDE ORANGE GLOW BACKGROUND */}
       <div className="fixed inset-0 -z-10 bg-black" />
       <div className="fixed inset-y-0 left-0 w-1/3 -z-10 bg-gradient-to-r from-orange-900/60 via-orange-700/20 to-transparent" />
@@ -18,7 +17,6 @@ const Layout = () => {
       </main>
 
       <Footer />
-
     </div>
   );
 };
