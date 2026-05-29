@@ -4,7 +4,7 @@ import Button from "../../components/Button";
 import {
   fetchArticles,
   mapArticleFromApi,
-} from "../../services/articleService";
+} from "../../services/ArticleService";
 
 const ArticlePage = () => {
   const { name } = useParams();

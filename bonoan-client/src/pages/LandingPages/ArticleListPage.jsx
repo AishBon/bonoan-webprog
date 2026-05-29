@@ -5,7 +5,7 @@ import Button from "../../components/Button";
 import {
   fetchArticles,
   mapArticleFromApi,
-} from "../../services/articleService";
+} from "../../services/ArticleService";
 
 const ArticleListPage = () => {
   const [articles, setArticles] = useState([]);
