@@ -22,7 +22,7 @@ const corsOptions = {
   origin: [
     "https://bonoan-webprog.vercel.app",
     "https://bonoan-webprog-seven.vercel.app",
-    "https://bonoan-webprog-oxcp.vercel.app/",
+    "https://bonoan-webprog-oxcp.vercel.app",
   ],
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
