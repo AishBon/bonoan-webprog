@@ -21,7 +21,7 @@ import {
   createArticle,
   updateArticle,
   deleteArticle,
-} from "../../services/articleService";
+} from "../../services/ArticleService";
 
 /* ─── Blank form matches Article schema exactly ──────────────────── */
 const BLANK_FORM = {
